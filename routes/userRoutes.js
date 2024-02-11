@@ -3,6 +3,8 @@ const User = require("../models/user");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const isAdmin = require('../middleware/isAdmin');
+
 /**
  * @swagger
  * /users:
@@ -19,10 +21,10 @@ const jwt = require("jsonwebtoken");
  *               type: string
  *               example: User routes are working!
  */
-router.get("/", (req, res) => {
+router.get("/", isAdmin, (req, res) => {
   res.send("User routes are working!");
 });
-/**
+/** 
  * @swagger
  * /users/register:
  *   post:
@@ -53,17 +55,35 @@ router.get("/", (req, res) => {
  *       400:
  *         description: Invalid request body.
  */
+
+
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, mobile, address } = req.body;
 
-    const user = new User({ name, email, password });
+    // Create a new user using the User model
+    const user = new User({
+      name: {
+        first: name.first,
+        last: name.last,
+      },
+      email,
+      password,
+      mobile,
+      address,
+    });
+
+    // Save the user to the database
     await user.save();
-    res.status(201).send({ user, message: "User Created Successfully" });
+
+    // Send a response with the created user and a success message
+    res.status(201).json({ user, message: "User Created Successfully" });
   } catch (err) {
-    res.status(400).send({ error: err });
+    // If an error occurs, send a 400 response with the error message
+    res.status(400).json({ error: err.message || "An error occurred during user registration." });
   }
 });
+
 /**
  * @swagger
  * /users/login:
@@ -120,6 +140,43 @@ router.post("/login", async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get all users (accessible to admin only).
+ *     description: Fetch all users from the database. Accessible only to admin users.
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: A list of users.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Server error.
+ */
+router.get("/all-user", isAdmin, async (req, res) => {
+  try {
+    // Fetch all users from the database
+    const users = await User.find();
+
+    // Send the list of users as a response
+    res.status(200).json({
+      users,
+      count: users.length,
+      message: 'All Users Fetched Successfully by Admin',
+    });
+  } catch (err) {
+    // If an error occurs, send a 500 response with the error message
+    res.status(500).json({ error: err.message || 'An error occurred while fetching users.' });
+  }
+});
 
 // register a user
 // login a user

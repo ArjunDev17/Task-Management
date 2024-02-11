@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
+const isAdmin = require('../middleware/isAdmin');
 const Task = require("../models/task");
 
 /**
@@ -26,15 +27,32 @@ const Task = require("../models/task");
  *       401:
  *         description: Unauthorized access.
  */
-router.get("/task", auth, (req, res) => {
+router.get("/tas",isAdmin, (req, res) => {
   res.json({
     message: "Task routes are working!",
-    user: req.user,
+   
   });
+});
+router.get("/allT", isAdmin, async (req, res) => {
+  console.log('Received token:', req.header('Authorization'));
+  try {
+    console.log('Received token:', req.header('Authorization'));
+    
+    // Add this line to log the decoded payload
+    console.log('Decoded payload:', req.user);
+
+    const tasks = await Task.find();
+    res.status(200).json({
+      tasks,
+      count: tasks.length,
+      message: 'All tasks Fetched Successfully by Admin',
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message || 'An error occurred while fetching tasks.' });
+  }
 });
 
 // CRUD tasks for authenticated users
-
 /**
  * @swagger
  * /tasks/add:
@@ -81,7 +99,6 @@ router.post("/add", auth, async (req, res) => {
   }
 });
 
-
 /**
  * @swagger
  * /tasks/user-tasks:
@@ -100,11 +117,9 @@ router.post("/add", auth, async (req, res) => {
  *       500:
  *         description: Server error.
  */
-router.get("/user-tasks", auth, async (req, res) => {
+router.get('/user-tasks', auth, isAdmin, async (req, res) => {
   try {
-    const tasks = await Task.find({
-      owner: req.user._id,
-    });
+    const tasks = await Task.find();
 
     // Reverse the order of tasks
     const reversedTasks = tasks.reverse();
@@ -112,16 +127,13 @@ router.get("/user-tasks", auth, async (req, res) => {
     res.status(200).json({
       tasks: reversedTasks,
       count: tasks.length,
-      message: "Tasks Fetched Successfully",
+      message: 'All Tasks Fetched Successfully',
     });
   } catch (err) {
     res.status(500).send({ error: err });
   }
 });
-
-
 //fetch a task by id
-
 /**
  * @swagger
  * /tasks/{id}:
@@ -218,6 +230,10 @@ router.delete("/:id", auth, async (req, res) => {
     res.status(500).send({ error: err });
   }
 });
+
+
+
+
 
 module.exports = router;
 
