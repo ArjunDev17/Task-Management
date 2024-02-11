@@ -3,11 +3,56 @@ const User = require("../models/user");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Check if the User routes are working.
+ *     description: Returns a message indicating whether the User routes are working or not.
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A success response with a message indicating the User routes are working.
+ *         content:
+ *           text/plain:
+ *             schema:
+ *               type: string
+ *               example: User routes are working!
+ */
 router.get("/", (req, res) => {
   res.send("User routes are working!");
 });
-
+/**
+ * @swagger
+ * /users/register:
+ *   post:
+ *     summary: Register a new user.
+ *     description: Register a new user with provided name, email, and password.
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *     responses:
+ *       201:
+ *         description: User created successfully.
+ *       400:
+ *         description: Invalid request body.
+ */
 router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -19,15 +64,34 @@ router.post("/register", async (req, res) => {
     res.status(400).send({ error: err });
   }
 });
-
-
-// @route POST /users/login
-// @group User - Operations about user
-// @param {string} email.body.required - User's email
-// @param {string} password.body.required - User's password
-// @returns {object} 200 - User object and access token
-// @returns {Error}  400 - Invalid credentials
-// Authenticate user and generate access token.
+/**
+ * @swagger
+ * /users/login:
+ *   post:
+ *     summary: Login a user.
+ *     description: Login a user with provided email and password.
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *             required:
+ *               - email
+ *               - password
+ *     responses:
+ *       200:
+ *         description: Logged in successfully.
+ *       400:
+ *         description: Invalid credentials or request body.
+ */
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;

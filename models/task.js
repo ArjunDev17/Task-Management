@@ -2,13 +2,27 @@ const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema(
   {
-    description: { 
+    title: {
       type: String,
-      required: true 
+      required: true,
     },
-    completed: { 
-      type: Boolean, 
-      default: false },
+    description: {
+      type: String,
+      required: true,
+    },
+    dueDate: {
+      type: Date,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["pending", "inProgress", "completed"],
+      default: "pending",
+    },
+    completed: {
+      type: Boolean,
+      default: false,
+    },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -22,3 +36,28 @@ const taskSchema = new mongoose.Schema(
 
 const Task = mongoose.model("Task", taskSchema);
 module.exports = Task;
+
+// const mongoose = require("mongoose");
+
+// const taskSchema = new mongoose.Schema(
+//   {
+//     description: { 
+//       type: String,
+//       required: true 
+//     },
+//     completed: { 
+//       type: Boolean, 
+//       default: false },
+//     owner: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       required: true,
+//       ref: "User",
+//     },
+//   },
+//   {
+//     timestamps: true,
+//   }
+// );
+
+// const Task = mongoose.model("Task", taskSchema);
+// module.exports = Task;
