@@ -1,12 +1,9 @@
 # Task-Management
-
-###Interns project
-
 ###Project: Task Management API
 
 ### Description:
 
-    Develop a task management API facilitating CRUD (Create, Read, Update, Delete) operations on tasks. Each task should encompass essential attributes such as a title, description, due date, and status (e.g., pending, In Progress, completed).
+    Developed a task management API facilitating CRUD (Create, Read, Update, Delete) operations on tasks. Each task should encompass essential attributes such as a title, description, due date, and status (e.g., pending, In Progress, completed).
 
 ### Requirements:
 
