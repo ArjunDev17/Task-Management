@@ -19,6 +19,15 @@ router.post("/register", async (req, res) => {
     res.status(400).send({ error: err });
   }
 });
+
+
+// @route POST /users/login
+// @group User - Operations about user
+// @param {string} email.body.required - User's email
+// @param {string} password.body.required - User's password
+// @returns {object} 200 - User object and access token
+// @returns {Error}  400 - Invalid credentials
+// Authenticate user and generate access token.
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -46,6 +55,7 @@ router.post("/login", async (req, res) => {
     res.status(400).send({ error: err });
   }
 });
+
 
 // register a user
 // login a user

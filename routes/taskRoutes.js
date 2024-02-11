@@ -4,7 +4,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const Task = require("../models/task");
 
-router.get("/test", auth, (req, res) => {
+router.get("/task", auth, (req, res) => {
   res.json({
     message: "Task routes are working!",
     user: req.user,
@@ -13,7 +13,7 @@ router.get("/test", auth, (req, res) => {
 
 // CRUD tasks for authenticated users
 //create a task
-router.post("/", auth, async (req, res) => {
+router.post("/add", auth, async (req, res) => {
   try {
     // description, completed from req.body
     // owner : req.user._id
@@ -29,7 +29,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 // get user tasks
-router.get("/", auth, async (req, res) => {
+router.get("/user-tasks", auth, async (req, res) => {
   try {
     const tasks = await Task.find({
       owner: req.user._id,
@@ -63,15 +63,11 @@ router.get("/:id", auth, async (req, res) => {
   }
 });
 
-// update a task by id   -   description , completed
+// update a task by id  
 router.patch("/:id", auth, async (req, res) => {
   const taskid = req.params.id;
   const updates = Object.keys(req.body);
-  // {
-  //     description : "new description",
-  //     completed: true,
-  //     owner : "asfasfasfasfasf"
-  // }
+ 
   const allowedUpdates = ["description", "completed"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
