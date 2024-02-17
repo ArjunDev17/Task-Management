@@ -1,29 +1,55 @@
-# Task-Management
-###Project: Task Management API
+# Task-Management API
 
-### Description:
+## Description
 
-    Developed a task management API facilitating CRUD (Create, Read, Update, Delete) operations on tasks. Each task should encompass essential attributes such as a title, description, due date, and status (e.g., pending, In Progress, completed).
+This project implements a Task Management API that allows users to perform CRUD operations on tasks. Each task includes attributes such as title, description, due date, and status.
 
-### Requirements:
+## Requirements
 
-    User Authentication:
-        - Incorporate user authentication to ensure only authorized users can access and modify their tasks.
-        - Grant admin users full access to all tasks.
+### User Authentication
+- User authentication is implemented to restrict access to authorized users only. Admin users have full access to all tasks.
 
-    Task Operations:
-        - Establish an API endpoint for adding new tasks.
-        - Create an API endpoint to retrieve a list of tasks for a specific user (Admin users can access all tasks).
-        - Implement features to update task details and mark tasks as completed or delete them.
+### Task Operations
+- API endpoints are provided for adding new tasks, retrieving tasks for a specific user, updating task details, marking tasks as completed, and deleting tasks.
 
-    Database:
-        - Employ a database of your preference.
+### Database
+- MongoDB is used as the NoSQL database for storing task-related data.
 
-    Documentation:
-        - Furnish comprehensive documentation for your API, covering authentication procedures, available endpoints, and the expected request and response formats.
+### Documentation
+- Comprehensive API documentation covering authentication procedures, available endpoints, and request/response formats is provided.
 
-    Additional:
-        Integrate pagination into the task list API endpoint.
-        Include sorting and filtering options for the task list.
-        Ensure proper error handling and status codes in API responses.
-        Develop unit tests for critical components of your application.
+### Additional Features
+- Pagination is integrated into the task list API endpoint.
+- Sorting and filtering options are available for the task list.
+- Proper error handling and status codes are implemented in API responses.
+- Unit tests are developed to ensure the reliability of critical components.
+
+## Technologies Used
+
+- Node.js
+- MongoDB
+- Postman
+- Swagger
+
+## Getting Started
+
+To get started with the Task-Management API, follow these steps:
+
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Set up MongoDB and configure the database connection.
+4. Run the application using `npm start`.
+
+## API Documentation
+
+Detailed API documentation can be found in [API_Documentation.md](API_Documentation.md).
+
+## Testing
+
+Testing of the API endpoints can be done using Postman. Import the provided Postman collection and execute the requests.
+
+## Contributing
+
+Contributions are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
